@@ -268,10 +268,10 @@
 
 					<div class="w-100"><br></div>
 					<!-- OBSERVACIONES -->
-					<div class="col-md-12">
+					<!-- <div class="col-md-12">
 						<label>Observación cosecha</label>
 						<textarea id="descripcion_material" name="descripcion_material" rows="4" class="form-control"></textarea>
-					</div>
+					</div> -->
 
 				</div>
 			</div>
@@ -569,10 +569,10 @@
 
 							<div class="w-100"><br></div>
 							<!-- OBSERVACIONES -->
-							<div class="col-md-12">
+							<!-- <div class="col-md-12">
 								<label>Observación cosecha</label>
 								<textarea id="descripcion_materialu" name="descripcion_materialu" rows="4" class="form-control"></textarea>
-							</div>
+							</div> -->
 
 						</div>
 					</div>

@@ -102,9 +102,9 @@ if ($rol_user != 1 && $rol_user != 2) {
                     <th>
                         <div class="text-center">Liquidación<br />cosecha</div>
                     </th>
-                    <th>
-                        <div class="text-center">Observación<br />cosecha</div>
-                    </th>
+                    <!-- <th>
+                        <div class="text-center">Gastos<br />varios</div>
+                    </th> -->
                     <th>
                         <div class="text-center">PDF</div>
                     </th>
@@ -201,7 +201,7 @@ if ($rol_user != 1 && $rol_user != 2) {
                                                 font-size:12px;
                                                 font-weight:bold;
                                                 box-shadow:0px 1px 4px rgba(0,0,0,0.2);">
-                                                GALPÓN 1
+                                                GALPÓN 1Galpón Avícola Norte
                                             </span>
                                             <div style="margin-top:5px; font-size:15px; font-weight:bold; color:#007bff;">
                                                 <?php echo $data['codigo_orions_g1']; /* ya no es <a> */ ?>
@@ -230,7 +230,7 @@ if ($rol_user != 1 && $rol_user != 2) {
                                                 font-size:12px;
                                                 font-weight:bold;
                                                 box-shadow:0px 1px 4px rgba(0,0,0,0.2); ">
-                                                GALPÓN 2
+                                                GALPÓN   Galpón Avícola Sur
                                             </span>
                                             <div style="margin-top:5px; font-size:15px; font-weight:bold; color:#007bff;">
                                                 <?php echo $data['codigo_orions_g2']; /* ya no es <a> */ ?>
@@ -561,11 +561,11 @@ if ($rol_user != 1 && $rol_user != 2) {
                                 </div>
                             </td>
                             <!-- DESCRIPCIÓN -->
-                            <td>
+                            <!-- <td>
                                 <div class="text-center">
                                     <?php echo !empty($data['descripcion_material']) ? $data['descripcion_material'] : "N/A"; ?>
                                 </div>
-                            </td>
+                            </td> -->
 
                             <td style="cursor:pointer;"
                                 onclick="window.open('../fpdf-pago/pagos.php?codigo_orions_almacen=<?php echo $data['codigo_orions_almacen']; ?>', '_blank');">

@@ -78,7 +78,7 @@ if ($rol_user != 1 && $rol_user != 2) {
         </style>
         <div class="page-head-modern">
             <h1>
-                GALPON 1
+                Galpón Avícola Norte
                 <small>Produccion de Pollos de Engorde</small>
             </h1>
         </div>
@@ -176,6 +176,7 @@ if ($rol_user != 1 && $rol_user != 2) {
                             <td>
                                 <div class="text-center"><?php echo $data['codigo']; ?></div>
                             </td>
+                            
                             <td style="cursor:pointer;">
                                 <div class="text-center" style="pointer-events:none;">
                                     <?php echo !empty($data['codigo_orions']) ? $data['codigo_orions'] : 'N/A'; ?>

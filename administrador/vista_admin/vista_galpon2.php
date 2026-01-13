@@ -72,7 +72,7 @@ if ($rol_user != 1 && $rol_user != 2) {
             <!-- TÍTULO MODERNO -->
             <div class="page-head-modern">
                 <h1>
-                    GALPON 2
+                    Galpón Avícola Sur
                     <small>Produccion de Pollos de Engorde</small>
                 </h1>
             </div>
@@ -152,23 +152,23 @@ if ($rol_user != 1 && $rol_user != 2) {
 
                         // Datos
                         $datos = $data['codigo'] . "||" .
-                        $data['codigo_orions'] . "||" .
-                        $data['cantidad_pollo'] . "||" .
-                        $data['precio_pollo'] . "||" .
-                        $data['color'] . "||" .
-                        $data['fayido'] . "||" .
-                        $data['tipo_alimento'] . "||" .
-                        $data['cantidad'] . "||" .
-                        $data['precio_alimento'] . "||" .
-                        $data['fecha_inicio'] . "||" .
-                        $data['fecha_fin'] . "||" .
-                        $data['descripcion'] . "||" .
-                        $data['alimento_inicio'] . "||" .
-                        $data['precio_inicio'] . "||" .
-                        $data['alimento_preinicio'] . "||" .
-                        $data['precio_preinicio'];
+                            $data['codigo_orions'] . "||" .
+                            $data['cantidad_pollo'] . "||" .
+                            $data['precio_pollo'] . "||" .
+                            $data['color'] . "||" .
+                            $data['fayido'] . "||" .
+                            $data['tipo_alimento'] . "||" .
+                            $data['cantidad'] . "||" .
+                            $data['precio_alimento'] . "||" .
+                            $data['fecha_inicio'] . "||" .
+                            $data['fecha_fin'] . "||" .
+                            $data['descripcion'] . "||" .
+                            $data['alimento_inicio'] . "||" .
+                            $data['precio_inicio'] . "||" .
+                            $data['alimento_preinicio'] . "||" .
+                            $data['precio_preinicio'];
 
-                        
+
                         $url_destino = "almacen.php";
 
                     ?>
