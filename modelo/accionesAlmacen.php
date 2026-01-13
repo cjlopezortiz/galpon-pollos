@@ -75,60 +75,60 @@ if (isset($_GET['accion'])) {
 						?, ?, ?, ?, 
 						?, ?, ?, ?, ?
                         )";
-	    $reg = $conexion->prepare($sql);
+		$reg = $conexion->prepare($sql);
 		$reg->bindParam(1,  $maxAlmacenes);
 		$reg->bindParam(2,  $codigo_orions);
 		$reg->bindParam(3,  $descripcion_material);
 		$reg->bindParam(4,  $cantidad_total);
 		$reg->bindParam(5,  $precio_kilo);
-		
+
 		$reg->bindParam(6,  $cloro);
 		$reg->bindParam(7,  $vinagre);
 		$reg->bindParam(8,  $hacido_hacetico);
 		$reg->bindParam(9,  $vitaminas);
-		
+
 		$reg->bindParam(10, $precio_cloro);
 		$reg->bindParam(11, $precio_vinagre);
 		$reg->bindParam(12, $yodo);
 		$reg->bindParam(13, $precio_yodo);
-		
+
 		$reg->bindParam(14, $precio_hacido);
 		$reg->bindParam(15, $precio_vitamina);
-		
+
 		$reg->bindParam(16, $anores);
 		$reg->bindParam(17, $precio_anores);
 		$reg->bindParam(18, $vacunas);
 		$reg->bindParam(19, $precio_vacunas);
-		
+
 		$reg->bindParam(20, $respiros);
 		$reg->bindParam(21, $precio_respiros);
 		$reg->bindParam(22, $tamo);
 		$reg->bindParam(23, $precio_tamo);
-		
+
 		$reg->bindParam(24, $cal);
 		$reg->bindParam(25, $precio_cal);
 		$reg->bindParam(26, $antibiotico);
 		$reg->bindParam(27, $precio_antibiotico);
-		
+
 		$reg->bindParam(28, $abc);
 		$reg->bindParam(29, $precio_abc);
 		$reg->bindParam(30, $vicarbonato);
 		$reg->bindParam(31, $precio_vicarbonato);
-		
+
 		$reg->bindParam(32, $melasa);
 		$reg->bindParam(33, $precio_melasa);
 		$reg->bindParam(34, $agua_potable);
 		$reg->bindParam(35, $precio_agua);
-		
+
 		$reg->bindParam(36, $luz);
 		$reg->bindParam(37, $precio_luz);
 		$reg->bindParam(38, $arriendo);
 		$reg->bindParam(39, $precio_arriendo);
-		
+
 		$reg->bindParam(40, $gastos_varios);
 		$reg->bindParam(41, $precio_gastos_varios);
-		
-		
+
+
 		if ($reg->execute() == TRUE) {
 			echo 1;
 		} else {
@@ -179,50 +179,49 @@ if (isset($_GET['accion'])) {
 		$gastos_varios = $_POST['gastos_varios'];
 		$precio_gastos_varios = $_POST['precio_gastos_varios'];
 
-
 		$sql = "UPDATE almacen SET
-                    codigo_orions=:codigo_orions,
-                    descripcion_material=:descripcion_material,
-                    cantidad_total=:cantidad_total,
-                    precio_kilo=:precio_kilo,
-                    cloro=:cloro,
-                    vinagre=:vinagre,
-                    hacido_hacetico=:hacido_hacetico,
-                    vitaminas=:vitaminas,
-                    precio_cloro=:precio_cloro,
-                    precio_vinagre=:precio_vinagre,
-                    yodo=:yodo,
-                    precio_yodo=:precio_yodo,
-                    precio_hacido=:precio_hacido,
-                    precio_vitamina=:precio_vitamina,
-                    anores=:anores,
-                    precio_anores=:precio_anores,
-                    vacunas=:vacunas,
-                    precio_vacunas=:precio_vacunas,
-                    respiros=:respiros,
-                    precio_respiros=:precio_respiros,
-                    tamo=:tamo,
-                    precio_tamo=:precio_tamo,
-                    cal=:cal,
-                    precio_cal=:precio_cal,
-                    antibiotico=:antibiotico,
-                    precio_antibiotico=:precio_antibiotico,
-                    abc=:abc,
-                    precio_abc=:precio_abc,
-                    vicarbonato=:vicarbonato,
-                    precio_vicarbonato=:precio_vicarbonato,
-                    melasa=:melasa,
-                    precio_melasa=:precio_melasa,
-                    agua_potable=:agua_potable,
-                    precio_agua=:precio_agua,
-					luz=:luz,
-					precio_luz=:precio_luz,
-					arriendo=:arriendo,
-					precio_arriendo=:precio_arriendo,
-					gastos_varios=:gastos_varios,
-					precio_gastos_varios=:precio_gastos_varios
+		codigo_orions = :codigo_orions,
+		descripcion_material = :descripcion_material,
+		cantidad_total = :cantidad_total,
+		precio_kilo = :precio_kilo,
+		cloro = :cloro,
+		vinagre = :vinagre,
+		hacido_hacetico = :hacido_hacetico,
+		vitaminas = :vitaminas,
+		precio_cloro = :precio_cloro,
+		precio_vinagre = :precio_vinagre,
+		yodo = :yodo,
+		precio_yodo = :precio_yodo,
+		precio_hacido = :precio_hacido,
+		precio_vitamina = :precio_vitamina,
+		anores = :anores,
+		precio_anores = :precio_anores,
+		vacunas = :vacunas,
+		precio_vacunas = :precio_vacunas,
+		respiros = :respiros,
+		precio_respiros = :precio_respiros,
+		tamo = :tamo,
+		precio_tamo = :precio_tamo,
+		cal = :cal,
+		precio_cal = :precio_cal,
+		antibiotico = :antibiotico,
+		precio_antibiotico = :precio_antibiotico,
+		abc = :abc,
+		precio_abc = :precio_abc,
+		vicarbonato = :vicarbonato,
+		precio_vicarbonato = :precio_vicarbonato,
+		melasa = :melasa,
+		precio_melasa = :precio_melasa,
+		agua_potable = :agua_potable,
+		precio_agua = :precio_agua,
+		luz = :luz,
+		precio_luz = :precio_luz,
+		arriendo = :arriendo,
+		precio_arriendo = :precio_arriendo,
+		gastos_varios = :gastos_varios,
+		precio_gastos_varios = IFNULL(precio_gastos_varios, 0) + :precio_gastos_varios
+	WHERE codigo = :codigo";
 
-                WHERE codigo = :codigo;";
 
 		$reg = $conexion->prepare($sql);
 

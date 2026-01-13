@@ -558,13 +558,37 @@
 
 							<!-- GASTOS VARIOS -->
 							<div class="col-md-6">
-								<label>Cantidad Gast varios</label>
-								<input type="number" id="gastos_variosu" name="gastos_variosu" rows="4" class="form-control"></textarea>
+								<label>Cantidad Gastos Varios</label>
+								<input
+									type="number"
+									id="gastos_variosu"
+									name="gastos_variosu"
+									class="form-control"
+									value="1"
+									readonly>
 							</div>
-
 							<div class="col-md-6">
 								<label>Precio Gast varios</label>
-								<input type="number" id="precio_gastos_variosu" name="precio_gastos_variosu" rows="4" class="form-control"></textarea>
+								<input type="number" id="precio_gastos_variosu" name="precio_gastos_variosu" rows="4" class="form-control" onfocus="mostrarAvisoGastos()"
+									onblur="ocultarAvisoGastos()">
+								<!-- Aviso (oculto por defecto y alineado) -->
+								<div
+									id="avisoGastos"
+									class="alert alert-warning mt-2 py-2 px-3"
+									style="display:none; width:100%;">
+									<small>
+										⚠️ <strong>Nota:</strong> Solo se permiten valores positivos para sumar gastos.
+									</small>
+								</div>
+								<script>
+									function mostrarAvisoGastos() {
+										document.getElementById('avisoGastos').style.display = 'block';
+									}
+
+									function ocultarAvisoGastos() {
+										document.getElementById('avisoGastos').style.display = 'none';
+									}
+								</script>
 							</div>
 
 							<div class="w-100"><br></div>
