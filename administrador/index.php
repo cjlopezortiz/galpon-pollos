@@ -59,7 +59,7 @@ if ($rol_user == 1 || $rol_user == 2) {
                 <i class="fa fa-circle"></i>
             </li>
             <li class="text-primary">
-                <span class="active">Proyecto Galpon</span>
+                <span class="active">Proyecto Galpon:</span>
                 <i class="fa fa-circle"></i>
             </li>
             <li class="text-primary">
