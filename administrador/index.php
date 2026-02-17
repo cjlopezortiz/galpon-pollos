@@ -55,7 +55,7 @@ if ($rol_user == 1 || $rol_user == 2) {
         <!-- BEGIN PAGE BREADCRUMB -->
         <ul class="page-breadcrumb breadcrumb">
             <li>
-                <a href="index.php">Inicio</a>
+                <a href="index.php">Inicio:</a>
                 <i class="fa fa-circle"></i>
             </li>
             <li class="text-primary">
