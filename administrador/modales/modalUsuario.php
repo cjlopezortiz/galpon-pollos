@@ -2,6 +2,9 @@
 require '../modelo/datos-documento.php';
 $mis_documentos = new misDocumentos();
 ?>
+<script type="text/javascript">
+  rol_user = <?php echo $rol_user ?>;
+</script>
 <!-- Modal registro de un usuario -->
 <div class="modal fade" id="modalNuevoUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-sm" role="document">
@@ -104,16 +107,35 @@ $mis_documentos = new misDocumentos();
 
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="rol_id">Rol</label>
-              <select name="rol_id" id="rol_id" class="form-control" required>
-                <option value="1">Administrador</option>
-              </select>
-
-              <div class="text-center" id="errorrol"></div>
+          <?php
+          if ($rol_user == 1) {
+          ?>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="rol_id">Rol</label>
+                <select name="rol_id" id="rol_id" class="form-control" required>
+                  <option value="1">Administrador</option>
+                  <option value="2">Asignador</option>
+                  <option value="3">Cliente</option>
+                </select>
+                <div class="text-center" id="errorrol"></div>
+              </div>
             </div>
-          </div>
+          <?php
+          } elseif ($rol_user == 2) {
+          ?>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="rol_id">Rol</label>
+                <select name="rol_id" id="rol_id" class="form-control" required>
+                  <option value="3">Cliente</option>
+                </select>
+                <div class="text-center" id="errorrol"></div>
+              </div>
+            </div>
+          <?php
+          }
+          ?>
         </div>
 
 
@@ -217,12 +239,35 @@ $mis_documentos = new misDocumentos();
               <option value="2">INACTIVO</option>
             </select>
           </div>
-          <div class="form-row">
-            <label for="rol_idu">Rol</label>
-            <select name="rol_idu" id="rol_idu" class="form-control" required>
-              <option value="1">Administrador</option>
-            </select>
-          </div>
+          <?php
+          if ($rol_user == 1) {
+          ?>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="rol_id">Rol</label>
+                <select name="rol_idu" id="rol_idu" class="form-control" required>
+                  <option value="1">Administrador</option>
+                  <option value="2">Asignador</option>
+                  <option value="3">Cliente</option>
+                </select>
+                <div class="text-center" id="errorrol"></div>
+              </div>
+            </div>
+          <?php
+          } elseif ($rol_user == 2) {
+          ?>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="rol_id">Rol</label>
+                <select name="rol_idu" id="rol_idu" class="form-control" required>
+                  <option value="3">Cliente</option>
+                </select>
+                <div class="text-center" id="errorrol"></div>
+              </div>
+            </div>
+          <?php
+          }
+          ?>
         </div>
 
       </form>
@@ -230,9 +275,15 @@ $mis_documentos = new misDocumentos();
 
       <div class="modal-footer">
         <div class="col-sm-6 text-left">
+            <?php
+          if ($rol_user == 1) {
+          ?>
           <button type="button" class="btn btn-danger" data-dismiss="modal" id="eliminarDatosUsuario">
             Eliminar
           </button>
+            <?php
+          }
+          ?>
         </div>
         <div class="col-sm-6 text-right">
           <button type="button" class="btn btn-warning" data-dismiss="modal" id="actualizaDatosUsuario">

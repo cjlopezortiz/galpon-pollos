@@ -1,9 +1,6 @@
 <?php
 require_once '../modelo/val-admin.php';
 ?>
-<?php
-
-?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -11,7 +8,7 @@ require_once '../modelo/val-admin.php';
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Usuarios</title>
+	<title>Planillas</title>
 	<?php
 	include 'librerias-css.php';
 	?>
@@ -24,36 +21,35 @@ require_once '../modelo/val-admin.php';
 		?>
 	</div>
 	<div class="container-fluid">
-		<div id="tablaUsuarios"></div>
+		<div id="tablaPlaniya"></div>
 	</div>
 
 	<!-- FIN DEL CONTENIDO -->
 	<?php
-	include './modales/modalUsuario.php';
+	include './modales/modalPlaniya.php';
 	?>
-	<script src="../controlador/funciones-usuarios.js"></script>
+	<script src="../controlador/funciones-planiya.js"></script>
 	<?php
 	include 'librerias-js.php';
 	?>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			// Obtenemos el rol desde PHP
-			var rol_user = <?php echo $rol_user ?>;
-
+			rol_user = <?php echo $rol_user ?>;
 			if (rol_user == 1 || rol_user == 2 || rol_user == 3) {
-				// PASO CLAVE: Enviamos el rol_id como parámetro GET en la carga
-			$('#tablaUsuarios').load('./vista_admin/vista_usuario.php');
+				$('#tablaPlaniya').load('./vista_admin/vista_planiya.php');
 			} else {
 				alert("Error...");
 			}
-
-			initUsuario();
-			$('#actualizaDatosUsuario').click(function() {
-				modificarUsuario();
+			// $('#agregarNuevoUsuario').click(function () {
+			// 	agregardatosUsuario();
+			// });
+			initPlaniya();
+			$('#actualizaDatosPlaniya').click(function() {
+				modificarPlaniya();
 			});
 
-			$('#eliminarDatosUsuario').click(function() {
-				preguntarSiNoUsuario();
+			$('#eliminarDatosPlaniya').click(function() {
+				preguntarSiNoPlaniya();
 			});
 		});
 	</script>

@@ -1,393 +1,198 @@
 <?php
-include_once '../modelo/datos-almacen.php';
-include_once '../modelo/datos-galpon2.php';
-include_once '../modelo/datos-galpon1.php';
+require_once '../modelo/val-admin.php';
+require_once '../modelo/datos-cota_dia.php';
+require_once '../modelo/datos-planiya.php';
+
 include_once '../fpdf/fpdf.php';
 include 'exfpdf.php';
 include 'easyTable.php';
 
-// Instancias y Obtención de Datos
-$mis_almacen = new misAlmacenes();
-$mis_galpon2 = new misGalpon2();
-$mis_galpon1 = new misGalpon1();
+// 1. CAPTURAR DATOS POR GET
+$id_cota = $_GET['id_cota'] ?? null;
+$cedula  = $_GET['cedula'] ?? null;
 
-$codigo = $_GET['codigo'] ?? null;
-$res = $mis_almacen->viewAlmacenes($codigo);
-$gast = $res[0] ?? []; // Datos del almacén
-
-// ======================================================
-// 1. RECOLECCIÓN DE DATOS DE GASTOS Y CÁLCULO DEL TOTAL
-// ======================================================
-$precio_final = 0;
-$gastos_detalles = [];
-
-// Inicialización de datos generales
-$cantidad_pollo     = $gast['cantidad_pollo_g1'] ?? $gast['cantidad_pollo_g2'] ?? 0;
-$cantidad_total     = $gast['cantidad_total'] ?? $gast['cantidad_total'] ?? 0;
-$precio_pollo       = $gast['precio_pollo_g1'] ?? $gast['precio_pollo_g2'] ?? 0;
-$cantidad_al        = $gast['cantidad_g1'] ?? $gast['cantidad_g2'] ?? 0;
-$precio_al          = $gast['precio_alimento_g1'] ?? $gast['precio_alimento_g2'] ?? 0;
-$fayido             = $gast['fayido_g1'] ?? $gast['fayido_g2'] ?? 0;
-$inicio_ali         = $gast['alimento_inicio_g1'] ?? $gast['alimento_inicio_g2'] ?? 0;
-$precio_ini         = $gast['precio_inicio_g1'] ?? $gast['precio_inicio_g2'] ?? 0;
-$preinicio_ali      = $gast['alimento_preinicio_g1'] ?? $gast['alimento_preinicio_g2'] ?? 0;
-$precio_pre         = $gast['precio_preinicio_g1'] ?? $gast['precio_preinicio_g2'] ?? 0;
-
-// Lista de todos los campos de gastos, incluyendo los faltantes
-$campos_gastos = [
-    // [etiqueta, campo_cantidad, campo_precio]
-    ['Pollo', 'cantidad_pollo_g1', 'precio_pollo_g1'],
-    ['Alimento Engorde', 'cantidad_g1', 'precio_alimento_g1'],
-    // NUEVOS CAMPOS (Inicio y Preinicio)
-    ['Alimento Inicio', 'alimento_inicio_g1', 'precio_inicio_g1'],
-    ['Alimento Crecimiento', 'alimento_preinicio_g1', 'precio_preinicio_g1'],
-    ['Cloro', 'cloro', 'precio_cloro'],
-    ['Vinagre', 'vinagre', 'precio_vinagre'],
-    ['Ácido Acético', 'hacido_hacetico', 'precio_hacido'],
-    ['Vitaminas', 'vitaminas', 'precio_vitamina'],
-    ['Anores', 'anores', 'precio_anores'],
-    ['Vacunas', 'vacunas', 'precio_vacunas'],
-    ['Respiros', 'respiros', 'precio_respiros'],
-    ['Tamo', 'tamo', 'precio_tamo'],
-    ['Cal', 'cal', 'precio_cal'],
-    ['Antibiótico', 'antibiotico', 'precio_antibiotico'],
-    ['Otros (ABC)', 'abc', 'precio_abc'],
-    ['Bicarbonato', 'vicarbonato', 'precio_vicarbonato'],
-    ['Melasa', 'melasa', 'precio_melasa'],
-    ['Agua Potable', 'agua_potable', 'precio_agua'],
-    ['Electricidad (Luz)', 'luz', 'precio_luz'],
-    ['Arriendo', 'arriendo', 'precio_arriendo'],
-    ['Yodo', 'yodo', 'precio_yodo'],
-    ['Gastos Varios', 'gastos_varios', 'precio_gastos_varios']
-];
-
-foreach ($campos_gastos as $campo) {
-    $etiqueta = $campo[0];
-    // Se usa el nombre del campo_cantidad_g1 si existe, si no, se usa el de g2 (o null/0)
-    $cant_key = str_replace('g1', 'g2', $campo[1]);
-    $cantidad = $gast[$campo[1]] ?? $gast[$cant_key] ?? 0;
-
-    $precio_key = str_replace('g1', 'g2', $campo[2]);
-    $precio_unitario = $gast[$campo[2]] ?? $gast[$precio_key] ?? 0;
-
-    // Ajuste especial para 'Gastos Varios' si solo se registra el precio total.
-    if ($etiqueta === 'Gastos Varios' && $cantidad == 0 && $precio_unitario > 0) {
-        $cantidad = 1;
-    }
-
-    $total = $cantidad * $precio_unitario;
-
-    if ($cantidad > 0 && $precio_unitario > 0) {
-        $precio_final += $total;
-        $gastos_detalles[] = [
-            'etiqueta' => $etiqueta,
-            'cantidad' => $cantidad,
-            'precio' => $precio_unitario,
-            'total' => $total
-        ];
-    }
+if (!$id_cota) {
+    die("Error: No se recibió el ID de la cota.");
 }
-// Ajuste especial para Pollo y Alimento que tienen un campo de cantidad único
-$total_pollo = ($cantidad_pollo * $precio_pollo);
-$total_al = ($cantidad_al * $precio_al);
-$total_ini = ($inicio_ali * $precio_ini);
-$total_pre = ($preinicio_ali * $precio_pre);
 
+$mis_cota_dia = new misCotaDia();
+$mis_planiyas = new misPlaniyas();
 
-// ======================================================
-// 2. DEFINICIÓN DEL PDF 
-// ======================================================
-class PDF_HF extends exFPDF
-{
-    public $fecha_inicio;
-    public $fecha_fin;
-    public $descripcion;
-    function FancyBackground()
-    {
-        $this->SetFillColor(230, 245, 255);
-        $this->Rect(0, 0, 220, 280, 'F');
-        $logo = '';
-        if (file_exists($logo)) {
-            if (method_exists($this, 'SetAlpha')) {
-                $this->SetAlpha(0.08);
-            }
-            $this->Image($logo, 20, 35, 160, 160);
-            if (method_exists($this, 'SetAlpha')) {
-                $this->SetAlpha(1);
-            }
+// 2. OBTENER EL REGISTRO ESPECÍFICO
+$res_completo = $mis_cota_dia->viewCotaDia($cedula);
+$data_especifica = null;
+
+if ($res_completo) {
+    foreach ($res_completo as $r) {
+        if ($r['id_cota'] == $id_cota) {
+            $data_especifica = $r;
+            break;
         }
     }
+}
 
+// 3. OBTENER DATOS DEL CLIENTE
+$datos_cliente = $mis_planiyas->viewPlaniyasMas($cedula, $rol_user);
+$cliente = $datos_cliente[0] ?? null;
+
+// 4. LÓGICA DE CÁLCULO AJUSTADA
+$valor_cuota_num = (isset($data_especifica['couta']) && is_numeric($data_especifica['couta'])) ? $data_especifica['couta'] : 0;
+$prestado = $data_especifica['cantidad_saldo'] ?? 0;
+
+$total_recaudado = 0;
+$total_no_recaudado = 0;
+$dias_pagados = 0;
+$dias_no_pagados = 0;
+
+if ($data_especifica) {
+    for ($i = 1; $i <= 30; $i++) {
+        $si = $data_especifica["dia" . $i . "_si"] ?? 0;
+        $no = $data_especifica["dia" . $i . "_no"] ?? 0;
+
+        if ($si == 1) {
+            $total_recaudado += $valor_cuota_num;
+            $dias_pagados++;
+        } elseif ($no == 2) {
+            $total_no_recaudado += $valor_cuota_num;
+            $dias_no_pagados++;
+        }
+    }
+}
+
+// NUEVO: Cálculo del saldo restante real
+$total_restante = $prestado - $total_recaudado;
+if ($total_restante < 0) $total_restante = 0;
+
+// 5. CLASE PDF
+class PDF_HF extends exFPDF
+{
     function Header()
     {
+        $this->SetFillColor(23, 32, 42);
+        $this->Rect(0, 0, 216, 45, 'F');
 
+        if (file_exists('../imagenes/dolar2.jpg')) {
+            $this->Image('../imagenes/dolar2.jpg', 12, 10, 25);
+        }
 
-        // Fondo suave degradado superior
-        $this->SetFillColor(235, 245, 255);
-        $this->Rect(0, 0, 220, 35, 'F');
+        $this->SetY(12);
+        $this->SetFont('helvetica', 'B', 22);
+        $this->SetTextColor(255, 255, 255);
+        $this->Cell(0, 12, utf8_decode('ESTADO DE CUENTA'), 0, 1, 'C');
 
-        // Línea decorativa inferior
-        $this->SetDrawColor(70, 130, 180);
-        $this->SetLineWidth(0.8);
-        $this->Line(10, 35, 210, 35);
+        $this->SetFont('helvetica', 'B', 9);
+        $this->SetTextColor(46, 204, 113);
+        $this->Cell(0, 5, utf8_decode('SISTEMA DE GESTIÓN DE CARTERA PROFESIONAL'), 0, 1, 'C');
 
-        // ----------- LOGOS -------------
-        // Logo izquierdo
-        $this->Image('../imagenes/pollo2.jpeg', 12, 6, 22, 22);
-        // Logo derecho
-        $this->Image('../imagenes/pollo9.jpeg', 178, 6, 22, 22);
-
-
-        // ----------- TÍTULO PRINCIPAL -------------
-        $this->SetY(6);
-        $this->SetFont('Arial', 'B', 16);
-        $this->SetTextColor(30, 60, 130);
-        $this->Cell(0, 10, utf8_decode('REPORTE DE COSTOS DE PRODUCCIÓN AVÍCOLA'), 0, 1, 'C');
-
-
-        // ----------- FECHAS -------------
-        $this->SetFont('Arial', '', 10);
-        $this->SetTextColor(80, 80, 80);
-
-        // Caja suave de fondo para fechas
-        $this->SetFillColor(255, 255, 255);
-        $this->SetXY(60, 18);
-        $this->Rect(60, 18, 95, 13, 'F');
-
-
-
-        $this->SetXY(60, 19);
-        $this->Cell(95, 5, 'Inicio de cosecha: ' . $this->fecha_inicio, 0, 1, 'C');
-        $this->SetX(60);
-        $this->Cell(95, 5, 'Fin de cosecha: ' . $this->fecha_fin, 0, 1, 'C');
-
-        // Espacio hacia el contenido
-        $this->Ln(8);
-        // ----------- SUBTÍTULO (DEBAJO DEL TÍTULO) -------------
-        $this->SetFont('Arial', 'I', 10);
-        $this->SetTextColor(80, 80, 80);
-        $this->Cell(0, 6, utf8_decode('Sistema de Gestión Avícola ML'), 0, 1, 'C');
+        $this->SetFillColor(46, 204, 113);
+        $this->Rect(0, 43, 216, 2, 'F');
+        $this->Ln(20);
     }
-
-
 
     function Footer()
     {
-        // Fondo del footer
-        $this->SetFillColor(230, 240, 255);
-        $this->Rect(0, 262, 220, 25, 'F');
-    
-        // Línea superior decorativa
-        $this->SetDrawColor(190, 200, 225);
-        $this->SetLineWidth(0.5);
-        $this->Line(10, 262, 205, 262);
-    
-        // Logos del footer
-        $this->Image('../imagenes/pollo.jpg', 12, 266, 15, 15);
-        $this->Image('../imagenes/pollo.jpg', 188, 266, 15, 15);
-    
-        // -------------------------------------------------
-        //       OBSERVACIONES CENTRADAS (descripcion_material)
-        // -------------------------------------------------
-     
-    
-            // Título centrado
-            $this->SetXY(30, 239);
-            $this->SetFont('Arial', 'B', 9);
-            $this->SetTextColor(30, 60, 130);
-            $this->Cell(160, 50, utf8_decode("Observaciones Cosecha:"), 0, 1, 'C');
-    
-            // Texto centrado dentro de la caja
-            $this->SetXY(30, 244);
-            $this->SetFont('Arial', '', 8);
-            $this->SetTextColor(60, 60, 60);
-            $this->MultiCell(160, 50, utf8_decode($this->descripcion), 0, 'C');
-        
-    
-        // -------------------------------------------------
-        //       TEXTO LEGAL Y PAGINACIÓN
-        // -------------------------------------------------
-        $this->SetY(-13);
-        $this->SetFont('Arial', '', 8);
-        $this->SetTextColor(30, 60, 130);
-        $this->Cell(0, -5, utf8_decode('© ' . date('Y') . ' Granjas Avícolas - Reporte interno'), 0, 0, 'L');
-    
-        $this->SetFont('Arial', 'B', 9);
-        $this->SetTextColor(50, 80, 130);
-        $this->Cell(0, -5, utf8_decode('Página ') . $this->PageNo(), 0, 0, 'R');
+        $this->SetY(-15);
+        $this->SetFont('helvetica', 'I', 8);
+        $this->SetTextColor(120);
+        $this->Cell(0, 10, utf8_decode('Reporte de control interno - Generado el: ') . date('d/m/Y H:i'), 0, 0, 'L');
+        $this->Cell(0, 10, utf8_decode('Página ') . $this->PageNo() . ' de {nb}', 0, 0, 'R');
     }
-    
 }
 
 $pdf = new PDF_HF('P', 'mm', 'Letter');
-$pdf->fecha_inicio = $gast['fecha_inicio_g1'] ?? $gast['fecha_inicio_g2'] ?? '';
-$pdf->fecha_fin    = $gast['fecha_fin_g1'] ?? $gast['fecha_fin_g2'] ?? '';
-$pdf->descripcion    = $gast['descripcion_g1'] ?? $gast['descripcion_g2'] ?? '';
-$pdf->SetMargins(5, 30, 5);
-$pdf->SetAutoPageBreak(true, 25);
+$pdf->AliasNbPages();
 $pdf->AddPage();
-$pdf->SetFont('helvetica', '', 8);
 
-/* ================================
-    TABLA #1 — DETALLE DE COSTOS (Dos columnas de campos)
-================================ */
-$pdf->SetY(45);
+// --- TABLA DE DATOS DEL CLIENTE ---
+$tableCli = new easyTable($pdf, '{100, 100}', 'width:100%; border:0; font-family:helvetica; font-size:10; padding:4;');
+$tableCli->rowStyle('fillcolor:242, 244, 244; font-style:B; text-color:23, 32, 42;');
+$tableCli->easyCell(utf8_decode("  DATOS DEL CLIENTE"), 'border:L,3,46, 204, 113;');
+$tableCli->easyCell(utf8_decode("  RESUMEN DEL CRÉDITO"), 'border:L,3,52, 152, 219;');
+$tableCli->printRow();
 
-$t_costos = new easyTable($pdf, '%{25, 25, 25, 25}', 'border:1; paddingY:2; min-h:6;');
+$tableCli->rowStyle('border:B; border-color:235, 235, 235;');
+$tableCli->easyCell(utf8_decode("Nombre: ") . mb_strtoupper(($cliente['nombre'] ?? '') . ' ' . ($cliente['apellido'] ?? 'N/A')));
+$tableCli->easyCell(utf8_decode("Capital Prestado: $") . number_format($prestado, 0, ',', '.'), 'font-style:B; text-color:39, 174, 96;');
+$tableCli->printRow();
 
-// CABECERA 
-$t_costos->easyCell(utf8_decode('DETALLE DE COSTOS (TODOS LOS GASTOS)'), 'colspan:4; align:C; font-style:B; bgcolor:#C6E0B4; paddingY:3'); // <--- UTF8_DECODE
-$t_costos->printRow();
+$tableCli->rowStyle('border:B; border-color:235, 235, 235;');
+$tableCli->easyCell(utf8_decode("Cédula: ") . ($cliente['cedula'] ?? 'N/A'));
+$tableCli->easyCell(utf8_decode("Valor Cuota: $") . number_format($valor_cuota_num, 0, ',', '.'), 'font-style:B;');
+$tableCli->printRow();
 
-$total_items = count($gastos_detalles);
-$half_point = ceil($total_items / 2);
-$item_index = 0;
+$tableCli->rowStyle('border:B; border-color:235, 235, 235;');
+$tableCli->easyCell(utf8_decode("Barrio: ") . ($cliente['barrio'] ?? 'No registrada'));
+$tableCli->easyCell(utf8_decode("Mora Actual (X): $") . number_format($total_no_recaudado, 0, ',', '.'), 'text-color:192, 57, 43; font-style:B; background:254, 240, 240;');
+$tableCli->printRow();
 
-for ($i = 0; $i < $half_point; $i++) {
-    // Fila para Cantidad
-    $item1 = $gastos_detalles[$i] ?? null;
-    $item2 = $gastos_detalles[$i + $half_point] ?? null;
+$tableCli->rowStyle('border:B; border-color:235, 235, 235;');
+$tableCli->easyCell(utf8_decode("Dirección: ") . ($cliente['direccion'] ?? 'No registrada'));
+$tableCli->printRow();
+$tableCli->endTable(10);
 
-    // Etiqueta Columna 1
-    $t_costos->easyCell(utf8_decode($item1['etiqueta'] . ' (Cant.):'), 'font-style:B; bgcolor:#F9F9F9'); // <--- UTF8_DECODE
-    // Valor Columna 1
-    $t_costos->easyCell(number_format($item1['cantidad']), 'align:C');
+// --- CALENDARIO DE PAGOS ---
+if ($data_especifica) {
+    $pdf->SetFont('helvetica', 'B', 11);
+    $pdf->SetTextColor(44, 62, 80);
+    $pdf->Cell(0, 10, utf8_decode("CALENDARIO DE PAGOS: " . $data_especifica['fecha_cota_dia'] . " AL " . $data_especifica['fecha_cota_dia_fin']), 0, 1, 'L');
 
-    // Etiqueta Columna 2
-    if ($item2) {
-        $t_costos->easyCell(utf8_decode($item2['etiqueta'] . ' (Cant.):'), 'font-style:B; bgcolor:#F9F9F9'); // <--- UTF8_DECODE
-    } else {
-        $t_costos->easyCell('', 'bgcolor:#F9F9F9');
+    $tablePagos = new easyTable($pdf, 15, 'width:100%; border:1; border-color:220,220,220; font-family:helvetica; font-size:8; padding:2.5;');
+
+    for ($bloque = 0; $bloque < 2; $bloque++) {
+        $tablePagos->rowStyle('fillcolor:52, 73, 94; text-color:255; font-style:B;');
+        $inicio = ($bloque * 15) + 1;
+        $fin = $inicio + 14;
+
+        for ($i = $inicio; $i <= $fin; $i++) {
+            $tablePagos->easyCell("D$i", 'align:C;');
+        }
+        $tablePagos->printRow();
+
+        for ($i = $inicio; $i <= $fin; $i++) {
+            $si = $data_especifica["dia" . $i . "_si"] ?? 0;
+            $no = $data_especifica["dia" . $i . "_no"] ?? 0;
+
+            if ($si == 1) {
+                $tablePagos->easyCell('OK', 'align:C; background:234, 250, 241; text-color:25, 111, 61; font-style:B;');
+            } elseif ($no == 2) {
+                $tablePagos->easyCell('X', 'align:C; background:253, 237, 236; text-color:176, 58, 46; font-style:B;');
+            } else {
+                $tablePagos->easyCell('-', 'align:C; text-color:160, 160, 160;');
+            }
+        }
+        $tablePagos->printRow();
     }
-    // Valor Columna 2
-    if ($item2) {
-        $t_costos->easyCell(number_format($item2['cantidad']), 'align:C');
-    } else {
-        $t_costos->easyCell('');
-    }
-    $t_costos->printRow();
+    $tablePagos->endTable(10);
 
-    // Fila para Precio Unitario
-    // Etiqueta Columna 1
-    $t_costos->easyCell(utf8_decode($item1['etiqueta'] . ' (Precio Unit.):'), 'font-style:B; bgcolor:#F0F0F0'); // <--- UTF8_DECODE
-    // Valor Columna 1
-    $t_costos->easyCell('$ ' . number_format($item1['precio']), 'align:C');
+    // --- RESUMEN FINAL ---
+    $tableTot = new easyTable($pdf, '{130, 70}', 'width:100%; border:1; border-color:210,210,210; font-family:helvetica; font-size:11; padding:5;');
+    $tableTot->rowStyle('fillcolor:44, 62, 80; text-color:255; font-style:B;');
+    $tableTot->easyCell(utf8_decode("INDICADORES DE COBRO"), 'align:R;');
+    $tableTot->easyCell("VALORES", 'align:C;');
+    $tableTot->printRow();
 
-    // Etiqueta Columna 2
-    if ($item2) {
-        $t_costos->easyCell(utf8_decode($item2['etiqueta'] . ' (Precio Unit.):'), 'font-style:B; bgcolor:#F0F0F0'); // <--- UTF8_DECODE
-    } else {
-        $t_costos->easyCell('', 'bgcolor:#F0F0F0');
-    }
-    // Valor Columna 2
-    if ($item2) {
-        $t_costos->easyCell('$ ' . number_format($item2['precio']), 'align:C');
-    } else {
-        $t_costos->easyCell('');
-    }
-    $t_costos->printRow();
+    $tableTot->easyCell(utf8_decode("Total Días Pagados (OK):"), 'align:R;');
+    $tableTot->easyCell($dias_pagados . " dias", 'align:C; font-style:B; text-color:39, 174, 96;');
+    $tableTot->printRow();
 
-    // Fila para Total Parcial
-    // Etiqueta Columna 1
-    $t_costos->easyCell(utf8_decode($item1['etiqueta'] . ' (Total):'), 'font-style:B; bgcolor:#EFEFEF'); // <--- UTF8_DECODE
-    // Valor Columna 1
-    $t_costos->easyCell('$ ' . number_format($item1['total']), 'align:C; font-style:B');
+    $tableTot->easyCell(utf8_decode("Total Días No Pagados (X):"), 'align:R;');
+    $tableTot->easyCell($dias_no_pagados . " dias", 'align:C; font-style:B; text-color:192, 57, 43;');
+    $tableTot->printRow();
 
-    // Etiqueta Columna 2
-    if ($item2) {
-        $t_costos->easyCell(utf8_decode($item2['etiqueta'] . ' (Total):'), 'font-style:B; bgcolor:#EFEFEF'); // <--- UTF8_DECODE
-    } else {
-        $t_costos->easyCell('', 'bgcolor:#EFEFEF');
-    }
-    // Valor Columna 2
-    if ($item2) {
-        $t_costos->easyCell('$ ' . number_format($item2['total']), 'align:C; font-style:B');
-    } else {
-        $t_costos->easyCell('');
-    }
-    $t_costos->printRow();
+    $tableTot->easyCell(utf8_decode("CARTERA PENDIENTE (MORA):"), 'align:R;');
+    $tableTot->easyCell("$" . number_format($total_no_recaudado, 0, ',', '.'), 'align:C; font-style:B; text-color:192, 57, 43; background:254, 240, 240;');
+    $tableTot->printRow();
 
-    // Separador de elementos
-    $t_costos->easyCell('', 'colspan:4; bgcolor:#FFFFFF; paddingY:0.5');
-    $t_costos->printRow();
+    $tableTot->rowStyle('fillcolor:244, 246, 247; font-style:B;');
+    $tableTot->easyCell("SALDO RESTANTE TOTAL:", 'align:R;');
+    $tableTot->easyCell("$" . number_format($total_restante, 0, ',', '.'), 'align:C; text-color:192, 57, 43; font-size:13;');
+    $tableTot->printRow();
+
+    $tableTot->rowStyle('fillcolor:244, 246, 247; font-style:B;');
+    $tableTot->easyCell("TOTAL RECAUDADO EN EL MES:", 'align:R;');
+    $tableTot->easyCell("$" . number_format($total_recaudado, 0, ',', '.'), 'align:C; text-color:39, 174, 96; font-size:13;');
+    $tableTot->printRow();
+    $tableTot->endTable();
 }
 
-// Total General de Costos
-$t_costos->easyCell(utf8_decode('TOTAL GENERAL DE COSTOS:'), 'colspan:2; align:L; font-style:B; bgcolor:#D9E1F2; paddingY:4; font-size:10'); // <--- UTF8_DECODE
-$t_costos->easyCell('$ ' . number_format($precio_final), 'colspan:2; align:R; font-style:B; bgcolor:#D9E1F2; paddingY:4; font-size:10');
-$t_costos->printRow();
-
-$t_costos->endTable(5);
-
-/* ==========================================================
-    TABLA #2 — LIQUIDACIÓN VENTA Y FAYIDOS (Diseño en una columna simple)
-========================================================== */
-$pdf->Ln(5);
-
-$t_liquidacion = new easyTable($pdf, '%{50,50}', 'border:1; paddingY:3;');
-
-$t_liquidacion->easyCell(utf8_decode('RESUMEN DE VENTA Y PÉRDIDAS'), 'colspan:2; align:C; font-style:B; bgcolor:#C6E0B4; paddingY:4'); // <--- UTF8_DECODE
-$t_liquidacion->printRow();
-
-// Datos de Venta
-$cantidad_total = $gast['cantidad_total'] ?? 0;
-$precio_kilo = $gast['precio_kilo'] ?? 0;
-$total_final_venta = $cantidad_total * $precio_kilo;
-
-// Validar si hay liquidación de venta
-$hay_venta = ($cantidad_total > 0 && $precio_kilo > 0);
-
-if ($hay_venta) {
-    $ganancia_final = $total_final_venta - $precio_final;
-} else {
-    $ganancia_final = 0; // o $total_final_venta
-}
-
-
-// FILA CANTIDAD KILOS VENDIDOS
-$t_liquidacion->easyCell(utf8_decode('Cantidad Total Kilos Vendidos:'), 'font-style:B; bgcolor:#F9F9F9; paddingY:3'); // <--- UTF8_DECODE
-$t_liquidacion->easyCell(number_format($total_final_venta), 'align:C; paddingY:3');
-$t_liquidacion->printRow();
-
-// FILA PRECIO KILO
-$t_liquidacion->easyCell(utf8_decode('Precio por Kilo de Venta:'), 'font-style:B; bgcolor:#F9F9F9; paddingY:3'); // <--- UTF8_DECODE
-$t_liquidacion->easyCell('$ ' . number_format($precio_kilo), 'align:C; paddingY:3');
-$t_liquidacion->printRow();
-
-// FILA TOTAL VENTA
-$t_liquidacion->easyCell(utf8_decode('TOTAL LIQUIDACIÓN VENTA:'), 'font-style:B; bgcolor:#D9E1F2; paddingY:4'); // <--- UTF8_DECODE
-$t_liquidacion->easyCell('$ ' . number_format($total_final_venta), 'align:R; font-style:B; bgcolor:#D9E1F2; paddingY:4');
-$t_liquidacion->printRow();
-
-// Fila separadora
-$t_liquidacion->easyCell(utf8_decode(''), 'colspan:2; paddingY:1');
-$t_liquidacion->printRow();
-
-// FILA FAYIDOS (Pérdidas)
-$t_liquidacion->easyCell(utf8_decode('CANTIDAD DE POLLOS MUERTOS COSECHA (PÉRDIDA):'), 'font-style:B; bgcolor:#FFEBEB; paddingY:3; color:#DC3545'); // <--- UTF8_DECODE
-$t_liquidacion->easyCell(number_format($fayido), 'align:C; paddingY:3; bgcolor:#FFEBEB; color:#DC3545');
-$t_liquidacion->printRow();
-
-$t_liquidacion->endTable(8);
-
-// MINI TABLA DE GANANCIA FINAL
-$pdf->Ln(3);
-
-$t_ganancia = new easyTable($pdf, '%{100}', 'border:1; paddingY:6; bgcolor:#E2F0D9;');
-
-$t_ganancia->easyCell(
-    utf8_decode('GANANCIA FINAL'),
-    'align:C; font-style:B; font-size:11; bgcolor:#A9D08E; paddingY:4'
-);
-$t_ganancia->printRow();
-
-$t_ganancia->easyCell(
-    '$ ' . number_format($ganancia_final),
-    'align:C; font-style:B; font-size:14; color:#155724; paddingY:6'
-);
-
-$t_ganancia->printRow();
-$t_ganancia->endTable(10);
-
-
-$pdf->Output();
+$pdf->Output('I', 'Reporte_Pagos_' . $cedula . '.pdf');
