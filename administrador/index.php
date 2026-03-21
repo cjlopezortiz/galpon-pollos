@@ -188,7 +188,42 @@ if ($rol_user == 1) {
 
 <body>
 
+<<<<<<< HEAD
     <div class="container main-content">
+=======
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="index.php">Inicio:</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li class="text-primary">
+                <span class="active">Proyecto Galpon:</span>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li class="text-primary">
+                <span class="active">Panel principal:</span>
+                <i class="fa fa-circle"></i>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <h3 class="text-right">Bienvenido: <?php echo $user_nombre; ?></h3>
+        <?php
+        if ($rol_user == 1 || $rol_user == 2) {
+        ?>
+            <style>
+                .galpon-card {
+                    border-radius: 15px;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                    transition: transform .2s;
+                    padding: 20px;
+                    text-align: center;
+                    background: #ffffff;
+                    margin-bottom: 25px;
+                }
+>>>>>>> 7e85e95eded65972d0d4d885394847d48708a139
 
         <?php include 'menu.php'; ?>
 

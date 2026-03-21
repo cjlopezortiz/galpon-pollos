@@ -214,11 +214,19 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         <footer class="text-center">
             <div class="footer-line"></div>
             <p class="mb-1"><strong>SISTEMA DE GESTIÓN v1.0</strong> © 2026</p>
             <p class="mb-0">Desarrollado por: Carlos Javier Lopez - Cúcuta</p>
             <span class="badge badge-light text-muted">Entorno de Producción</span>
+=======
+        <!-- Footer -->
+        <footer class="text-center mt-5">
+            <p>SISTEMA Version 1.0 © Galpónes 2025 - Norte de Santander:</p>
+            <p>Desarrollado por: Carlos Javier Lopez - Cúcuta Norte de santander:</p>
+            <p>Dominio de pruebas para desarrollo he implementación:</p>
+>>>>>>> 7e85e95eded65972d0d4d885394847d48708a139
         </footer>
     </div>
 
@@ -226,4 +234,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+<<<<<<< HEAD
 </html>
+=======
+
+</html>
+>>>>>>> 7e85e95eded65972d0d4d885394847d48708a139
