@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Sistema de Gestión | Login</title>
-    <link rel="icon" type="image/jpeg" href="imagenes/pollo2.jpeg">
+    <link rel="icon" type="image/jpeg" href="imagenes/dola1.jpeg">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">

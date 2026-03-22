@@ -155,7 +155,8 @@ class misUsuarios
 
         $consulta = "SELECT * FROM usuario
                  WHERE 
-                 asignador_id = :admin_id
+                 codigo = :admin_id  -- 🔥 EL MISMO ADMIN
+                 OR asignador_id = :admin_id
                  OR asignador_id IN (
                      SELECT codigo FROM usuario 
                      WHERE asignador_id = :admin_id
