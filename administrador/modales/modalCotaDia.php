@@ -9,6 +9,13 @@ $cedula = $_POST['cedula'] ?? null;
 $cedula = $_GET['cedula'] ?? null;
 $mis_cota_dia = new misCotaDia();
 $res = $mis_cota_dia->viewCotaDia($cedula);
+$cantidad_saldo = '';
+$couta = '';
+
+if (!empty($res)) {
+    $cantidad_saldo = $res[0]['cantidad_saldo']; // o el nombre real de tu campo
+    $couta = $res[0]['couta']; // o 'cuota'
+}
 
 $mis_planiyas = new misPlaniyas();
 $datos_cliente = $mis_planiyas->viewPlaniyasMas($cedula, $rol_user);
@@ -88,12 +95,18 @@ $contador = 0;
                 <div class="row">
                     <div class="col-md-6">
                         <label>Monto prestado</label>
-                        <input type="number" id="cantidad_saldo" class="form-control">
+                        <input type="number"
+                            value="<?php echo $cantidad_saldo; ?>"
+                            id="cantidad_saldo"
+                            class="form-control">
                     </div>
 
                     <div class="col-md-6">
                         <label>Cuota</label>
-                        <input type="number" id="couta" class="form-control">
+                        <input type="number"
+                            value="<?php echo $couta; ?>"
+                            id="couta"
+                            class="form-control">
                     </div>
                 </div>
 

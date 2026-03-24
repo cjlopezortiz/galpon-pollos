@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Sistema de Gestión | Login</title>
-    <link rel="icon" type="image/jpeg" href="imagenes/dola1.jpeg">
+    <link rel="icon" type="image/jpeg" href="./imagenes/dolar1.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -153,7 +153,7 @@
         <div class="header-box">
             <div class="row align-items-center">
                 <div class="col-3 col-md-2 text-center">
-                    <img src="imagenes/dolar2.jpg" class="img-fluid" alt="Logo">
+                    <img src="./imagenes/dolar2.jpg" class="img-fluid" alt="Logo">
                 </div>
                 <div class="col-6 col-md-8 text-center">
                     <h1 class="header-title m-0">
@@ -162,7 +162,7 @@
                     </h1>
                 </div>
                 <div class="col-3 col-md-2 text-center">
-                    <img src="imagenes/dolar2.jpg" class="img-fluid d-none d-md-inline" alt="Logo">
+                    <img src="./imagenes/dolar2.jpg" class="img-fluid d-none d-md-inline" alt="Logo">
                 </div>
             </div>
         </div>
@@ -172,7 +172,7 @@
                 <div class="pr-md-4">
                     <h2 class="mb-4" style="font-weight: 800; color: var(--primary-color);">Panel de Control</h2>
                     <div class="main-img-container">
-                        <img src="imagenes/dolar1.jpg" class="main-img" alt="Bienvenida">
+                        <img src="./imagenes/dolar1.jpg" class="main-img" alt="Bienvenida">
                     </div>
                 </div>
             </div>
