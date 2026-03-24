@@ -11,12 +11,14 @@ $mis_cota_dia = new misCotaDia();
 $res = $mis_cota_dia->viewCotaDia($cedula);
 $cantidad_saldo = '';
 $couta = '';
+$readonly = '';
 
 if (!empty($res)) {
-    $cantidad_saldo = $res[0]['cantidad_saldo']; // o el nombre real de tu campo
+    $cantidad_saldo = $res[0]['cantidad_saldo']; // ajusta nombre real
     $couta = $res[0]['couta']; // o 'cuota'
-}
 
+    $readonly = 'readonly'; // 👈 activa readonly
+}
 $mis_planiyas = new misPlaniyas();
 $datos_cliente = $mis_planiyas->viewPlaniyasMas($cedula, $rol_user);
 $cliente = $datos_cliente[0] ?? null;
@@ -98,7 +100,8 @@ $contador = 0;
                         <input type="number"
                             value="<?php echo $cantidad_saldo; ?>"
                             id="cantidad_saldo"
-                            class="form-control">
+                            class="form-control"
+                            <?php echo $readonly; ?>>
                     </div>
 
                     <div class="col-md-6">
@@ -106,7 +109,8 @@ $contador = 0;
                         <input type="number"
                             value="<?php echo $couta; ?>"
                             id="couta"
-                            class="form-control">
+                            class="form-control"
+                            <?php echo $readonly; ?>>
                     </div>
                 </div>
 
