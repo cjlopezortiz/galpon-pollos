@@ -50,7 +50,8 @@ class misCotaDia
                     dia27_si, dia27_no,
                     dia28_si, dia28_no,
                     dia29_si, dia29_no,
-                    dia30_si, dia30_no
+                    dia30_si, dia30_no,
+                    dia31_si, dia31_no
                 FROM cota_diaria 
                 WHERE cedula = :cedula";
 
@@ -109,7 +110,8 @@ class misCotaDia
                     dia27_si, dia27_no,
                     dia28_si, dia28_no,
                     dia29_si, dia29_no,
-                    dia30_si, dia30_no
+                    dia30_si, dia30_no,
+                    dia31_si, dia31_no
                 FROM cota_diaria 
                 ORDER BY id_cota ASC";
         $modules = $conexion->prepare($consulta);

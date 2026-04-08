@@ -64,7 +64,7 @@ function limpiarModalEdicion() {
     $('#mora_cota_u').val('');
     $('#observaciones_dia_u').val('');
 
-    for (var i = 1; i <= 30; i++) {
+    for (var i = 1; i <= 31; i++) {
         $('#dia' + i + '_si_u').prop('checked', false);
         $('#dia' + i + '_no_u').prop('checked', false);
     }
@@ -76,7 +76,7 @@ function limpiarModalEdicion() {
 // ===============================
 function limpiarTablaDias() {
 
-    for (var i = 1; i <= 30; i++) {
+    for (var i = 1; i <= 31; i++) {
         $('#dia' + i + '_si_u').prop('checked', false);
         $('#dia' + i + '_no_u').prop('checked', false);
     }
@@ -133,7 +133,7 @@ function agregarformCotaDia(datos) {
 
     var pos = 3;
 
-    for (var i = 1; i <= 30; i++) {
+    for (var i = 1; i <= 31; i++) {
 
         if (d[pos] == 1) {
             $('#dia' + i + '_si_u').prop('checked', true);
@@ -168,7 +168,7 @@ function modificarCotaDia() {
         "&mora_cota=" + $('#mora_cota_u').val() +
         "&observaciones_dia=" + $('#observaciones_dia_u').val();
 
-    for (var i = 1; i <= 30; i++) {
+    for (var i = 1; i <= 31; i++) {
 
         var si = $('#dia' + i + '_si_u').is(':checked') ? 1 : 0;
         var no = $('#dia' + i + '_no_u').is(':checked') ? 2 : 0;

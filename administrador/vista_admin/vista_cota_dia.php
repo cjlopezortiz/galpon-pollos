@@ -63,7 +63,7 @@ $contador = 0;
 
             // GENERAR DATOS INDEPENDIENTES PARA CADA FILA
             $datosFila = $data['id_cota'] . "||" . $data['cedula'] . "||" . $data['fecha_cota_dia'];
-            for ($d = 1; $d <= 30; $d++) {
+            for ($d = 1; $d <= 31; $d++) {
                 $datosFila .= "||" . $data["dia" . $d . "_si"] . "||" . $data["dia" . $d . "_no"];
             }
             $datosFila .= "||" . $data['observaciones_dia'] . "||" . $data['fecha_cota_dia_fin'] . "||" . $data['cantidad_saldo'] . "||" . $data['couta'] . "||" . $data['mora_cota'];
@@ -105,7 +105,7 @@ $contador = 0;
                     $cuotas_no_pagadas = 0;
                     $valor_cuota = $data['couta'] ?? 0;
 
-                    for ($i = 1; $i <= 30; $i++) {
+                    for ($i = 1; $i <= 31; $i++) {
                         $si = $data["dia" . $i . "_si"];
                         $no = $data["dia" . $i . "_no"];
 
@@ -178,7 +178,7 @@ $contador = 0;
                 <table class="table tabla-calendario table-bordered">
                     <thead style="background:#2c3e50;color:white">
                         <tr>
-                            <?php for ($i = 1; $i <= 30; $i++) echo "<th>Día $i</th>"; ?>
+                            <?php for ($i = 1; $i <= 31; $i++) echo "<th>Día $i</th>"; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -189,7 +189,7 @@ $contador = 0;
                             $cuotas_no_pagadas = 0;
                             $valor_cuota = $data['couta'] ?? 0;
 
-                            for ($i = 1; $i <= 30; $i++) {
+                            for ($i = 1; $i <= 31; $i++) {
                                 $si = $data["dia" . $i . "_si"];
                                 $no = $data["dia" . $i . "_no"];
 

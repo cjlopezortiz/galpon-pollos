@@ -46,7 +46,7 @@ $dias_pagados = 0;
 $dias_no_pagados = 0;
 
 if ($data_especifica) {
-    for ($i = 1; $i <= 30; $i++) {
+    for ($i = 1; $i <= 31; $i++) {
         $si = $data_especifica["dia" . $i . "_si"] ?? 0;
         $no = $data_especifica["dia" . $i . "_no"] ?? 0;
 
@@ -140,13 +140,17 @@ if ($data_especifica) {
 
     $tablePagos = new easyTable($pdf, 15, 'width:100%; border:1; border-color:220,220,220; font-family:helvetica; font-size:8; padding:2.5;');
 
-    for ($bloque = 0; $bloque < 2; $bloque++) {
+    for ($bloque = 0; $bloque < 3; $bloque++) {
         $tablePagos->rowStyle('fillcolor:52, 73, 94; text-color:255; font-style:B;');
         $inicio = ($bloque * 15) + 1;
         $fin = $inicio + 14;
 
         for ($i = $inicio; $i <= $fin; $i++) {
-            $tablePagos->easyCell("D$i", 'align:C;');
+            if ($i <= 31) {
+                $tablePagos->easyCell("D$i", 'align:C;');
+            } else {
+                $tablePagos->easyCell('', 'align:C;');
+            }
         }
         $tablePagos->printRow();
 

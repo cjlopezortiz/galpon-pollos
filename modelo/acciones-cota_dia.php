@@ -21,7 +21,7 @@ if (isset($_GET['accion'])) {
         $observaciones_dia = $_POST['observaciones_dia'];
 
         // DIAS
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 31; $i++) {
 
             ${"dia" . $i . "_si"} = isset($_POST["dia" . $i . "_si"]) ? $_POST["dia" . $i . "_si"] : 0;
             ${"dia" . $i . "_no"} = isset($_POST["dia" . $i . "_no"]) ? $_POST["dia" . $i . "_no"] : 0;
@@ -29,13 +29,13 @@ if (isset($_GET['accion'])) {
 
         $sql = "INSERT INTO cota_diaria (id_cota,cedula,fecha_cota_dia,fecha_cota_dia_fin,cantidad_saldo,couta,";
 
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 31; $i++) {
             $sql .= "dia" . $i . "_si,dia" . $i . "_no,";
         }
 
         $sql .= "observaciones_dia) VALUES (?,?,?,?,?,?,";
 
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 31; $i++) {
             $sql .= "?, ?,";
         }
 
@@ -52,7 +52,7 @@ if (isset($_GET['accion'])) {
         $reg->bindParam($i++, $cantidad_saldo);
         $reg->bindParam($i++, $couta);
 
-        for ($d = 1; $d <= 30; $d++) {
+        for ($d = 1; $d <= 31; $d++) {
 
             $reg->bindParam($i++, ${"dia" . $d . "_si"});
             $reg->bindParam($i++, ${"dia" . $d . "_no"});
@@ -76,7 +76,7 @@ if (isset($_GET['accion'])) {
         $mora_cota = $_POST['mora_cota'];
         $observaciones_dia = $_POST['observaciones_dia'];
 
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 31; $i++) {
             ${"dia" . $i . "_si"} = isset($_POST["dia" . $i . "_si"]) ? $_POST["dia" . $i . "_si"] : 0;
             ${"dia" . $i . "_no"} = isset($_POST["dia" . $i . "_no"]) ? $_POST["dia" . $i . "_no"] : 0;
         }
@@ -120,6 +120,7 @@ if (isset($_GET['accion'])) {
                 dia28_si=:dia28_si,dia28_no=:dia28_no,
                 dia29_si=:dia29_si,dia29_no=:dia29_no,
                 dia30_si=:dia30_si,dia30_no=:dia30_no,
+                dia31_si=:dia31_si,dia31_no=:dia31_no,
 
                 observaciones_dia=:observaciones_dia
 
@@ -135,7 +136,7 @@ if (isset($_GET['accion'])) {
         $reg->bindParam(":couta", $couta);
         $reg->bindParam(":mora_cota", $mora_cota);
 
-        for ($d = 1; $d <= 30; $d++) {
+        for ($d = 1; $d <= 31; $d++) {
             $reg->bindParam(":dia" . $d . "_si", ${"dia" . $d . "_si"});
             $reg->bindParam(":dia" . $d . "_no", ${"dia" . $d . "_no"});
         }

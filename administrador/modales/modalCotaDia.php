@@ -173,7 +173,7 @@ $contador = 0;
                     </thead>
                     <tbody>
                         <?php
-                        for ($i = 1; $i <= 30; $i += 5) {
+                        for ($i = 1; $i <= 31; $i += 5) {
                             echo "<tr>";
                             for ($j = 0; $j < 5; $j++) {
                                 $d = $i + $j;
