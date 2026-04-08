@@ -129,11 +129,11 @@ $contador = 0;
                     <!-- INFO CLIENTE -->
                     <div class="info-cliente">
                         <h4 class="mb-2">📅 Calendario de Cobro Diario</h4>
-
                         <div class="datos">
                             <span><strong>Cédula:</strong> <?php echo $cliente['cedula'] ?? ''; ?></span>
                             <span><strong>Cliente:</strong> <?php echo ($cliente['nombre'] ?? '') . ' ' . ($cliente['apellido'] ?? ''); ?></span>
                             <span><strong>Inicio:</strong> <?php echo $data['fecha_cota_dia']; ?></span>
+                            <span><strong>Seguro:</strong> $<?php echo number_format($data['mora_cota'] ?? 0, 0, ',', '.'); ?></span>
                             <span><strong>Monto:</strong> $<?php echo number_format($data['cantidad_saldo'] ?? 0, 0, ',', '.'); ?></span>
                             <span><strong>Cuota:</strong> $<?php echo number_format($data['couta'] ?? 0, 0, ',', '.'); ?></span>
                             <span><strong style="color: #e74c3c;">Saldo en mora:</strong> $<?php echo number_format($total_no_pagado ?? 0, 0, ',', '.'); ?></span>

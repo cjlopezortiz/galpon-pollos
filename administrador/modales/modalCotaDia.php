@@ -10,11 +10,13 @@ $cedula = $_GET['cedula'] ?? null;
 $mis_cota_dia = new misCotaDia();
 $res = $mis_cota_dia->viewCotaDia($cedula);
 $cantidad_saldo = '';
+$mora_cota = '';
 $couta = '';
 $readonly = '';
 
 if (!empty($res)) {
     $cantidad_saldo = $res[0]['cantidad_saldo']; // ajusta nombre real
+    $mora_cota = $res[0]['mora_cota']; // ajusta nombre real
     $couta = $res[0]['couta']; // o 'cuota'
 
     $readonly = 'readonly'; // 👈 activa readonly
@@ -95,6 +97,16 @@ $contador = 0;
                 <br>
 
                 <div class="row">
+
+                   <div class="col-md-6">
+                        <label>Seguro</label>
+                        <input type="number"
+                            value="<?php echo $mora_cota; ?>"
+                            id="mora_cota"
+                            class="form-control"
+                            <?php echo $readonly; ?>>
+                    </div>
+
                     <div class="col-md-6">
                         <label>Monto prestado</label>
                         <input type="number"
@@ -187,11 +199,11 @@ $contador = 0;
                     <input type="number" id="couta_u" class="form-control input-sm">
                 </div>
                 <br>
-                <!-- <div class="form-group">
-                    <label>Coutas en mora</label>
+                <div class="form-group">
+                    <label>Seguro</label>
                     <input type="number" id="mora_cota_u" class="form-control input-sm">
                 </div>
-                <br> -->
+                <br>
                 <div class="form-group" onclick="abrirFecha('fecha_cota_dia_u')">
                     <label for="fecha_cota_dia_u">Fecha inicio</label>
                     <input type="date" id="fecha_cota_dia_u" class="form-control input-sm">

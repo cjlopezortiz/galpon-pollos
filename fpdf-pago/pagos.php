@@ -38,6 +38,7 @@ $cliente = $datos_cliente[0] ?? null;
 // 4. LÓGICA DE CÁLCULO AJUSTADA
 $valor_cuota_num = (isset($data_especifica['couta']) && is_numeric($data_especifica['couta'])) ? $data_especifica['couta'] : 0;
 $prestado = $data_especifica['cantidad_saldo'] ?? 0;
+$seguro = $data_especifica['mora_cota'] ?? 0;
 
 $total_recaudado = 0;
 $total_no_recaudado = 0;
@@ -60,7 +61,7 @@ if ($data_especifica) {
 }
 
 // NUEVO: Cálculo del saldo restante real
-$total_restante = $prestado - $total_recaudado;
+$total_restante = ($prestado) - $total_recaudado;
 if ($total_restante < 0) $total_restante = 0;
 
 // 5. CLASE PDF
@@ -127,6 +128,7 @@ $tableCli->printRow();
 
 $tableCli->rowStyle('border:B; border-color:235, 235, 235;');
 $tableCli->easyCell(utf8_decode("Dirección: ") . ($cliente['direccion'] ?? 'No registrada'));
+$tableCli->easyCell(utf8_decode("Seguro: $") . number_format($seguro, 0, ',', '.'), 'text-color:192, 57, 43; font-style:B; background:254, 240, 240;');
 $tableCli->printRow();
 $tableCli->endTable(10);
 
@@ -169,6 +171,10 @@ if ($data_especifica) {
     $tableTot->rowStyle('fillcolor:44, 62, 80; text-color:255; font-style:B;');
     $tableTot->easyCell(utf8_decode("INDICADORES DE COBRO"), 'align:R;');
     $tableTot->easyCell("VALORES", 'align:C;');
+    $tableTot->printRow();
+
+    $tableTot->easyCell(utf8_decode("SEGURO:"), 'align:R;');
+    $tableTot->easyCell("$" . number_format($seguro, 0, ',', '.'),  'align:C; font-style:B; text-color:39, 174, 96;');
     $tableTot->printRow();
 
     $tableTot->easyCell(utf8_decode("Total Días Pagados (OK):"), 'align:R;');
