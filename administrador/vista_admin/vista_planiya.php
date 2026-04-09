@@ -97,6 +97,8 @@ $cant_planillas = $mis_planillas->counPlaniya($cedula_usuario, $rol_user);
 
                         <th class="text-center">Cédula</th>
 
+                        <th class="text-center">Telefono</th>
+
                         <th class="text-center">Cliente</th>
 
                         <th class="text-center">Barrio</th>
@@ -146,6 +148,10 @@ $cant_planillas = $mis_planillas->counPlaniya($cedula_usuario, $rol_user);
 
                             <td class="text-center">
                                 <?php echo $data['cedula']; ?>
+                            </td>
+
+                            <td class="text-center">
+                                <?php echo $data['cantidad_mora']; ?>
                             </td>
 
                             <td class="text-center">

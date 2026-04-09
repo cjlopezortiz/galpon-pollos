@@ -104,7 +104,7 @@ $contador = 0;
                             value="<?php echo $mora_cota; ?>"
                             id="mora_cota"
                             class="form-control"
-                            <?php echo $readonly; ?>>
+                            <?php //echo $readonly; ?>>
                     </div>
 
                     <div class="col-md-6">
@@ -113,7 +113,7 @@ $contador = 0;
                             value="<?php echo $cantidad_saldo; ?>"
                             id="cantidad_saldo"
                             class="form-control"
-                            <?php echo $readonly; ?>>
+                            <?php //echo $readonly; ?>>
                     </div>
 
                     <div class="col-md-6">
@@ -122,7 +122,7 @@ $contador = 0;
                             value="<?php echo $couta; ?>"
                             id="couta"
                             class="form-control"
-                            <?php echo $readonly; ?>>
+                            <?php //echo $readonly; ?>>
                     </div>
                 </div>
 

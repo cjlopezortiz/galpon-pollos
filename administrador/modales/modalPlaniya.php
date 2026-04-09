@@ -75,6 +75,12 @@
                         <br>
                     </div>
 
+                    <div class="col-md-6">
+                        <label>Telefono</label>
+                        <input type="text" id="cantidad_mora" class="form-control input-sm">
+                        <br>
+                    </div>
+
                 </div>
                 <!-- <div class="row">
 
@@ -148,19 +154,13 @@
 
                         <label>Cédula</label>
                         <input type="number" id="cedula_u" class="form-control input-sm">
-
                         <br>
-
                         <label>Nombre</label>
                         <input type="text" id="nombre_u" class="form-control input-sm">
-
                         <!-- <br>
-
                         <label>Monto Prestado</label>
                         <input type="number" id="catidad_prestada_u" class="form-control input-sm"> -->
-
                         <br>
-
                         <label>Barrio</label>
                         <input type="text" id="barrio_u" class="form-control input-sm">
 
@@ -172,21 +172,15 @@
 
                         <label>Fecha Registro</label>
                         <input type="date" id="fecha_inicio_u" class="form-control input-sm">
-
                         <br>
-
                         <label>Apellido</label>
                         <input type="text" id="apellido_u" class="form-control input-sm">
-
-
                         <br>
                         <label>Dirección</label>
                         <input type="text" id="direccion_u" class="form-control input-sm">
-
                         <br>
-                        <!-- 
-                       <label>Monto En Mora Actual</label>
-                        <input type="number" id="cantidad_mora_u" class="form-control input-sm"> -->
+                       <label>Telefono</label>
+                        <input type="number" id="cantidad_mora_u" class="form-control input-sm">
                     </div>
 
                 </div>

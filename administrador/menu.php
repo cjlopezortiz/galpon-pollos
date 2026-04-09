@@ -2,15 +2,17 @@
     :root {
         --nav-bg: #ffffff;
         --nav-text: #2c3e50;
-        --nav-accent: #27ae60; /* Verde dinero */
-        --nav-height: 70px;    /* AJUSTA AQUÍ EL TAMAÑO VERTICAL */
+        --nav-accent: #27ae60;
+        /* Verde dinero */
+        --nav-height: 70px;
+        /* AJUSTA AQUÍ EL TAMAÑO VERTICAL */
     }
 
     .custom-navbar {
         background-color: var(--nav-bg);
         border: none;
         border-radius: 0 0 15px 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         margin-bottom: 30px;
         min-height: var(--nav-height);
         display: flex;
@@ -27,7 +29,8 @@
 
     /* Logo - Ajuste de tamaño */
     .nav-logo img {
-        height: 80px; /* AJUSTA AQUÍ EL TAMAÑO DEL LOGO */
+        height: 80px;
+        /* AJUSTA AQUÍ EL TAMAÑO DEL LOGO */
         width: 80px;
         border-radius: 80%;
         object-fit: cover;
@@ -72,7 +75,8 @@
     }
 
     .btn-logout {
-        color: #e74c3c !important; /* Rojo para salir */
+        color: #e74c3c !important;
+        /* Rojo para salir */
         border: 1px solid #f5b7b1;
         border-radius: 8px;
         margin-left: 10px;
@@ -85,13 +89,17 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-        .user-name-text { display: none; } /* Oculta nombre en celular */
+        .user-name-text {
+            display: none;
+        }
+
+        /* Oculta nombre en celular */
     }
 </style>
 
 <nav class="custom-navbar">
     <div class="navbar-container">
-        
+
         <div style="display: flex; align-items: center;">
             <a href="index.php" class="nav-logo">
                 <img src="../imagenes/dolar2.jpg" alt="Logo Empresa">
@@ -109,7 +117,16 @@
             <li class="user-name-text">
                 <a href="#" class="user-info-pill">
                     <i class="fa fa-shield-halved" style="color: var(--nav-accent); margin-right: 8px;"></i>
-                    <span style="color: #7f8c8d; font-size: 12px; margin-right: 5px;">ID: <?php echo $rol_user; ?></span>
+                    <?php
+                    $roles = [
+                        1 => "Administrador",
+                        2 => "Cobrador",
+                        3 => "Cliente"
+                    ];
+                    ?>
+                    <span style="color: #7f8c8d; font-size: 12px; margin-right: 5px;">
+                        ID: <?php echo $roles[$rol_user] ?? "Desconocido"; ?>
+                    </span>
                     <strong><?php echo $user_nombre; ?></strong>
                 </a>
             </li>

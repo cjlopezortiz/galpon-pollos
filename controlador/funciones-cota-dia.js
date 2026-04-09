@@ -46,6 +46,7 @@ function limpiarModalCotaDia() {
     $('#fecha_cota_dia_fin').val('');
     $('#cantidad_saldo').val('');
     $('#couta').val('');
+    $('#mora_cota').val('');
     $('#observaciones_dia').val('');
 }
 
@@ -96,6 +97,7 @@ function agregardatosCotaDia() {
         "&fecha_cota_dia_fin=" + $('#fecha_cota_dia_fin').val() +
         "&cantidad_saldo=" + $('#cantidad_saldo').val() +
         "&couta=" + $('#couta').val() +
+        "&mora_cota=" + $('#mora_cota').val() +
         "&observaciones_dia=" + $('#observaciones_dia').val();
 
     $.ajax({

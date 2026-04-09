@@ -18,6 +18,7 @@ if (isset($_GET['accion'])) {
         $fecha_cota_dia_fin = $_POST['fecha_cota_dia_fin'];
         $cantidad_saldo = $_POST['cantidad_saldo'];
         $couta = $_POST['couta'];
+        $mora_cota = $_POST['mora_cota'];
         $observaciones_dia = $_POST['observaciones_dia'];
 
         // DIAS
@@ -27,13 +28,13 @@ if (isset($_GET['accion'])) {
             ${"dia" . $i . "_no"} = isset($_POST["dia" . $i . "_no"]) ? $_POST["dia" . $i . "_no"] : 0;
         }
 
-        $sql = "INSERT INTO cota_diaria (id_cota,cedula,fecha_cota_dia,fecha_cota_dia_fin,cantidad_saldo,couta,";
+        $sql = "INSERT INTO cota_diaria (id_cota,cedula,fecha_cota_dia,fecha_cota_dia_fin,cantidad_saldo,couta,mora_cota,";
 
         for ($i = 1; $i <= 31; $i++) {
             $sql .= "dia" . $i . "_si,dia" . $i . "_no,";
         }
 
-        $sql .= "observaciones_dia) VALUES (?,?,?,?,?,?,";
+        $sql .= "observaciones_dia) VALUES (?,?,?,?,?,?,?,";
 
         for ($i = 1; $i <= 31; $i++) {
             $sql .= "?, ?,";
@@ -51,6 +52,7 @@ if (isset($_GET['accion'])) {
         $reg->bindParam($i++, $fecha_cota_dia_fin);
         $reg->bindParam($i++, $cantidad_saldo);
         $reg->bindParam($i++, $couta);
+        $reg->bindParam($i++, $mora_cota);
 
         for ($d = 1; $d <= 31; $d++) {
 

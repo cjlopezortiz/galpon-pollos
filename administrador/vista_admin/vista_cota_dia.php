@@ -131,6 +131,7 @@ $contador = 0;
                         <h4 class="mb-2">📅 Calendario de Cobro Diario</h4>
                         <div class="datos">
                             <span><strong>Cédula:</strong> <?php echo $cliente['cedula'] ?? ''; ?></span>
+                            <span><strong>Telefono:</strong> <?php echo $cliente['cantidad_mora'] ?? ''; ?></span>
                             <span><strong>Cliente:</strong> <?php echo ($cliente['nombre'] ?? '') . ' ' . ($cliente['apellido'] ?? ''); ?></span>
                             <span><strong>Inicio:</strong> <?php echo $data['fecha_cota_dia']; ?></span>
                             <span><strong>Seguro:</strong> $<?php echo number_format($data['mora_cota'] ?? 0, 0, ',', '.'); ?></span>
