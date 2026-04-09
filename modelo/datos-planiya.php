@@ -67,7 +67,7 @@ class misPlaniyas
         $arreglo = array();
 
         // ADMIN Y ASIGNADOR ven todo
-        if ($rol_user == 1 || $rol_user == 2) {
+        if ($rol_user == 1 || $rol_user == 2 || $rol_user == 3) {
 
             $consulta = "SELECT id_planilla,
                             fecha_inicio,

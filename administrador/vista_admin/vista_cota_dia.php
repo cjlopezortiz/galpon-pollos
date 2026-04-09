@@ -128,24 +128,25 @@ $contador = 0;
                     ?>
                     <!-- INFO CLIENTE -->
                     <div class="info-cliente">
-                        <h4 class="mb-2">📅 Calendario de Cobro Diario</h4>
-                        <div class="datos">
-                            <span><strong>Cédula:</strong> <?php echo $cliente['cedula'] ?? ''; ?></span>
-                            <span><strong>Telefono:</strong> <?php echo $cliente['cantidad_mora'] ?? ''; ?></span>
-                            <span><strong>Cliente:</strong> <?php echo ($cliente['nombre'] ?? '') . ' ' . ($cliente['apellido'] ?? ''); ?></span>
-                            <span><strong>Inicio:</strong> <?php echo $data['fecha_cota_dia']; ?></span>
-                            <span><strong>Seguro:</strong> $<?php echo number_format($data['mora_cota'] ?? 0, 0, ',', '.'); ?></span>
-                            <span><strong>Monto:</strong> $<?php echo number_format($data['cantidad_saldo'] ?? 0, 0, ',', '.'); ?></span>
-                            <span><strong>Cuota:</strong> $<?php echo number_format($data['couta'] ?? 0, 0, ',', '.'); ?></span>
-                            <span><strong style="color: #e74c3c;">Saldo en mora:</strong> $<?php echo number_format($total_no_pagado ?? 0, 0, ',', '.'); ?></span>
-                            <span><strong>Fin:</strong> <?php echo $data['fecha_cota_dia_fin']; ?></span>
-                        </div>
+                        
+                            <h4 class="mb-2">📅 Calendario de Cobro Diario</h4>
+                            <div class="datos">
+                                <span><strong>Cédula:</strong> <?php echo $cliente['cedula'] ?? ''; ?></span>
+                                <span><strong>Telefono:</strong> <?php echo $cliente['cantidad_mora'] ?? ''; ?></span>
+                                <span><strong>Cliente:</strong> <?php echo ($cliente['nombre'] ?? '') . ' ' . ($cliente['apellido'] ?? ''); ?></span>
+                                <span><strong>Inicio:</strong> <?php echo $data['fecha_cota_dia']; ?></span>
+                                <span><strong>Seguro:</strong> $<?php echo number_format($data['mora_cota'] ?? 0, 0, ',', '.'); ?></span>
+                                <span><strong>Monto:</strong> $<?php echo number_format($data['cantidad_saldo'] ?? 0, 0, ',', '.'); ?></span>
+                                <span><strong>Cuota:</strong> $<?php echo number_format($data['couta'] ?? 0, 0, ',', '.'); ?></span>
+                                <span><strong style="color: #e74c3c;">Saldo en mora:</strong> $<?php echo number_format($total_no_pagado ?? 0, 0, ',', '.'); ?></span>
+                                <span><strong>Fin:</strong> <?php echo $data['fecha_cota_dia_fin']; ?></span>
+                            </div>
                     </div>
                     <br>
                     <!-- BOTONES -->
                     <div class="acciones mt-3 mt-md-0">
                         <?php
-                        if ($rol_user == 1 ||  $rol_user == 2) :
+                        if ($rol_user == 1 || $rol_user == 2) :
                         ?>
                             <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalNuevoCotaDia">
                                 <i class="fa fa-plus"></i> CREAR PLANILLA
@@ -154,7 +155,11 @@ $contador = 0;
                             <button class="btn btn-warning btn-sm" onclick="agregarformCotaDia('<?php echo $datosFila ?>')" data-toggle="modal" data-target="#modalEdicionCotaDia">
                                 <i class="fa fa-edit"></i> EDITAR
                             </button>
-                               <a href="../fpdf-pago/pagos.php?id_cota=<?php echo $data['id_cota']; ?>&cedula=<?php echo $data['cedula']; ?>"
+                        <?php endif; ?>
+                        <?php
+                        if ($rol_user == 1) :
+                        ?>
+                            <a href="../fpdf-pago/pagos.php?id_cota=<?php echo $data['id_cota']; ?>&cedula=<?php echo $data['cedula']; ?>"
                                 target="_blank"
                                 class="btn btn-danger btn-sm">
                                 <i class="fa fa-file-pdf-o"></i> PDF REPORTE PAGOS
