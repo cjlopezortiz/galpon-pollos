@@ -256,7 +256,7 @@ if ($rol_user == 1) {
                                     <div class="card-count" style="display:flex;justify-content:center;align-items:center;gap:10px;">
 
                                         <?php if ($rol_user == 1) { ?>
-                                            <span>Total usuarios:</span>
+                                            <span>Total Clientes:</span>
                                             <span style="
                                                     background:#3498db;
                                                     color:white;
@@ -305,7 +305,47 @@ if ($rol_user == 1) {
 
                         </div>
                     </a>
+                    <?php if ($rol_user == 1) { ?>
+                        <a href="usuarios.php" style="text-decoration:none;">
+                            <div class="card-loan card-usuarios">
 
+                                <div class="icon-circle bg-light-info">
+                                    <i class="fa fa-users-gear"></i>
+                                </div>
+
+                                <div class="card-title">Pagos / administrativo</div>
+
+                                <div class="card-count">
+                                    <div class="card-count">
+                                        <div class="card-count" style="display:flex;justify-content:center;align-items:center;gap:10px;">
+
+                                            <?php if ($rol_user == 1) { ?>
+                                                <span>Total Cobradores:</span>
+                                                <span style="
+                                                    background:#3498db;
+                                                    color:white;
+                                                    padding:5px 12px;
+                                                    border-radius:20px;
+                                                    font-weight:bold;
+                                                    font-size:14px;
+                                                ">
+                                                    <?php echo $cant_usuarios; ?>
+                                                </span>
+
+                                            
+                                            <?php } ?>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <span class="btn-enter btn-info-loan">
+                                    Administrar <i class="fa fa-arrow-right"></i>
+                                </span>
+
+                            </div>
+                        </a>
+                    <?php } ?>
                 <?php } else { ?>
 
                     <div class="card-loan card-usuarios" style="opacity:0.6;">
